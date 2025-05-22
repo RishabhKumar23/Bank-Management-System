@@ -12,7 +12,7 @@ public class Signup extends JFrame implements ActionListener {
     JRadioButton radioButton1, radioButton2, marred_button, single_button, other;
     JButton next;
 
-    JTextField first_name, last_name, email, address, city, state, pin;
+    JTextField name, father_name, email, address, city, state, pin;
     JDateChooser dateChooser;
 
     // Generating random for Application Number
@@ -50,16 +50,16 @@ public class Signup extends JFrame implements ActionListener {
         add(label3);
 
         // For first name label
-        JLabel first_name_label = new JLabel("Name :");
-        first_name_label.setFont(new Font("Raleway", Font.BOLD, 20));
-        first_name_label.setBounds(100, 190, 100, 30);
-        add(first_name_label);
+        JLabel name_label = new JLabel("Name :");
+        name_label.setFont(new Font("Raleway", Font.BOLD, 20));
+        name_label.setBounds(100, 190, 100, 30);
+        add(name_label);
 
         // For last name label
-        JLabel last_name_frame = new JLabel("Father's Name :");
-        last_name_frame.setFont(new Font("Raleway", Font.BOLD, 20));
-        last_name_frame.setBounds(100, 240, 200, 30);
-        add(last_name_frame);
+        JLabel father_name_frame = new JLabel("Father's Name :");
+        father_name_frame.setFont(new Font("Raleway", Font.BOLD, 20));
+        father_name_frame.setBounds(100, 240, 200, 30);
+        add(father_name_frame);
 
         // For Date of birth label
         JLabel DOB = new JLabel("Date of Birth");
@@ -114,16 +114,16 @@ public class Signup extends JFrame implements ActionListener {
         // --------------------  Text Field -------------------- //
 
         // For First name text field
-        first_name = new JTextField();
-        first_name.setFont(new Font("Raleway", Font.BOLD, 14));
-        first_name.setBounds(300, 190, 400, 30);
-        add(first_name);
+        name = new JTextField();
+        name.setFont(new Font("Raleway", Font.BOLD, 14));
+        name.setBounds(300, 190, 400, 30);
+        add(name);
 
         // For Last name text field
-        last_name = new JTextField();
-        last_name.setFont(new Font("Raleway", Font.BOLD, 14));
-        last_name.setBounds(300, 240, 400, 30);
-        add(last_name);
+        father_name = new JTextField();
+        father_name.setFont(new Font("Raleway", Font.BOLD, 14));
+        father_name.setBounds(300, 240, 400, 30);
+        add(father_name);
 
         // For date of birth field input
         dateChooser = new JDateChooser();
@@ -223,6 +223,51 @@ public class Signup extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String from_number = first;
+        String Name = name.getText();
+        String f_name = father_name.getText();
+        String dob = ((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();
+        String gender = null;
+
+        if (radioButton1.isSelected()) {
+            gender = "Male";
+        } else if (radioButton2.isSelected()) {
+            gender = "Female";
+        } else {
+            gender = "Other";
+        }
+
+        String Email = email.getText();
+        String marital = null;
+        if (marred_button.isSelected()) {
+            marital = "Married";
+        } else if (single_button.isSelected()) {
+            marital = "Unmarried";
+        } else if (other.isSelected()) {
+            marital = "Other";
+        }
+
+        String Address = address.getText();
+        String City = city.getText();
+        String pincode = pin.getText();
+        String State = state.getText();
+
+        // To add data to DB
+        try {
+            if (name.getText().isEmpty() || email.getText().isEmpty() || father_name.getText().isEmpty() || address.getText().isEmpty() || state.getText().isEmpty() || pin.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Fill all the fields");
+            } else {
+                DBConnect connect = new DBConnect();
+                String query = "insert into signup values('" + from_number + "', '" + Name + "','" + f_name + "','" + dob + "','" + gender + "','" + Email + "','" + marital + "', '" + Address + "', '" + City + "','" + pincode + "','" + State + "' )";
+                connect.statement.executeUpdate(query);
+                new Temp();
+                setVisible(false);
+            }
+
+        } catch (Exception E) {
+            E.printStackTrace();
+        }
+
 
     }
 
