@@ -18,7 +18,7 @@ public class Signup extends JFrame implements ActionListener {
     // Generating random for Application Number
     Random ran = new Random();
     long first4 = (ran.nextLong() % 9000L) + 1000L;
-    String first = " " + Math.abs(first4);
+    String form_no = " " + Math.abs(first4);
 
     Signup() {
         super("APPLICATION FORM");
@@ -32,7 +32,7 @@ public class Signup extends JFrame implements ActionListener {
         add(bank_img_display); // To add on the frame
 
         // For Application number
-        JLabel label1 = new JLabel("APPLICATION FORM NO." + first);
+        JLabel label1 = new JLabel("APPLICATION FORM NO." + form_no);
         label1.setBounds(160, 20, 600, 40);
         label1.setFont(new Font("Raleway", Font.BOLD, 38));
         add(label1);
@@ -214,7 +214,7 @@ public class Signup extends JFrame implements ActionListener {
 
         // ------------------ End Button -------------------- //
 
-        getContentPane().setBackground(new Color(222, 255, 228));
+        getContentPane().setBackground(new Color(227, 228, 230));
         setLayout(null);
         setSize(850, 800);
         setLocation(360, 40);
@@ -223,7 +223,7 @@ public class Signup extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String from_number = first;
+        String from_number = form_no;
         String Name = name.getText();
         String f_name = father_name.getText();
         String dob = ((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();
@@ -260,15 +260,13 @@ public class Signup extends JFrame implements ActionListener {
                 DBConnect connect = new DBConnect();
                 String query = "insert into signup values('" + from_number + "', '" + Name + "','" + f_name + "','" + dob + "','" + gender + "','" + Email + "','" + marital + "', '" + Address + "', '" + City + "','" + pincode + "','" + State + "' )";
                 connect.statement.executeUpdate(query);
-                new Temp();
+                new Signup2(form_no);
                 setVisible(false);
             }
 
         } catch (Exception E) {
             E.printStackTrace();
         }
-
-
     }
 
     public static void main(String[] args) {
